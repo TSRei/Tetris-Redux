@@ -259,26 +259,33 @@ export const canMoveTo = (shape, grid, x, y, rotation) => {
 
 // Adds current shape to grid
 export const addBlockToGrid = (shape, grid, x, y, rotation) => {
-  // Get the block array
-  const block = shapes[shape][rotation];
-  // Copy the grid
-  const newGrid = [...grid];
-  // Map the Block onto the grid
+  // At this point the game is not over
+  let blockOffGrid = false
+  const block = shapes[shape][rotation]
+  const newGrid = [ ...grid ]
   for (let row = 0; row < block.length; row++) {
     for (let col = 0; col < block[row].length; col++) {
       if (block[row][col]) {
-        newGrid[row + y][col + x] = shape;
+        const yIndex = row + y
+        // If the yIndex is less than 0 part of the block
+        // is off the top of the screen and the game is over
+        if (yIndex < 0) {
+          blockOffGrid = true
+        } else {
+          newGrid[row + y][col + x] = shape
+        }
       }
     }
   }
-  return newGrid;
-};
+  // Return both the newGrid and the gameOver bool                                                
+  return { grid: newGrid, gameOver: blockOffGrid }
+}
 
 // Checks for completed rows and scores points
 export const checkRows = (grid) => {
   // Points increase for each row completed
   // i.e. 40 points for completing one row, 100 points for two rows
-  const points = [0, 40, 100, 300, 1200];
+  const points = [0, 50, 100, 500, 1500, 3000];
   let completedRows = 0;
   for (let row = 0; row < grid.length; row++) {
     // No empty cells means it can't find a 0, so the row must be complete!

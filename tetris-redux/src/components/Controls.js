@@ -4,13 +4,18 @@ import { moveDown, moveLeft, moveRight, rotate } from "../actions";
 
 export default function Controls(props) {
   const dispatch = useDispatch();
-  const isRunning = useSelector((state) => state.isRunning);
+  const isRunning = useSelector((state) => state.game.isRunning);
+  const gameOver = useSelector((state) => state.game.gameOver);
   return (
     <div className="controls">
       {/* left */}
       <button
+        disabled={!isRunning || gameOver}
         className="control-button"
         onClick={(e) => {
+          if (!isRunning || gameOver) {
+            return;
+          }
           dispatch(moveLeft());
         }}
       >
@@ -19,8 +24,12 @@ export default function Controls(props) {
 
       {/* right */}
       <button
+        disabled={!isRunning || gameOver}
         className="control-button"
         onClick={(e) => {
+          if (!isRunning || gameOver) {
+            return;
+          }
           dispatch(moveRight());
         }}
       >
@@ -29,8 +38,12 @@ export default function Controls(props) {
 
       {/* rotate */}
       <button
+        disabled={!isRunning || gameOver}
         className="control-button"
         onClick={(e) => {
+          if (!isRunning || gameOver) {
+            return;
+          }
           dispatch(rotate());
         }}
       >
@@ -39,8 +52,12 @@ export default function Controls(props) {
 
       {/* down */}
       <button
+        disabled={!isRunning || gameOver}
         className="control-button"
         onClick={(e) => {
+          if (!isRunning || gameOver) {
+            return;
+          }
           dispatch(moveDown());
         }}
       >
